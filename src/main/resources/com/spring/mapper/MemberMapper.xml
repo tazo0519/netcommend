@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mapper.MemberMapper">
+
+	<resultMap id="signUpMap" type="com.spring.member.MemberVO">
+		<result property="email" column="email" />
+		<result property="name" column="name" /> 
+		<result property="password" column="password" />
+		<result property="phone" column="phone" />
+		<result property="age" column="age" />
+		<result property="sex" column="sex" />
+		<result property="category" column="category" />
+		<result property="email_state" column="email_state" />
+	</resultMap>
+	
+	<select id="emailCheck" resultMap="signUpMap">
+		select * from netflix_member where email = #{email}
+	</select>
+
+	<update id="verifyEmail" parameterType="com.spring.member.MemberVO" >
+		update netflix_member set email_state='Y' where email= #{email}
+	</update>
+	
+	<insert id="memberInsert" parameterType="com.spring.member.MemberVO" >
+		insert into netflix_member(email, password, name, phone, age, sex, category) 
+		values (#{email}, #{password}, #{name}, #{phone}, #{age}, #{sex}, #{category})
+	</insert>
+
+</mapper>
+

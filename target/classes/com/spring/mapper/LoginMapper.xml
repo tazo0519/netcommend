@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.LoginMapper">
+	<resultMap type="com.spring.login.LoginVO" id="LoginMap">
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="name" column="name" />
+		<result property="phone" column="phone" />
+		<result property="age" column="age" />
+		<result property="sex" column="sex" />
+		<result property="category" column="category" />
+		<result property="email_state" column="email_state" />
+	</resultMap>
+
+	<!-- 카운트 구해서 등록된 회원인지 확인 -->
+	<select id="checkMember" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM NETFLIX_MEMBER WHERE EMAIL=#{email} AND
+		EMAIL_STATE='Y'
+	</select>
+
+	<!-- 카운트 구해서 등록된 회원인지 확인 -->
+	<select id="checkEmail_state" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*) FROM NETFLIX_MEMBER WHERE EMAIL=#{email}
+		AND EMAIL_STATE='N'
+	</select>
+
+	<!-- 관리자인지 확인 -->
+	<select id="checkAdmin" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM NETFLIX_ADMIN WHERE EMAIL=#{email}
+	</select>
+
+	<!-- 관리자계정이면 정보 불러오기 -->
+	<select id="getAdmin" parameterType="String"
+		resultMap="LoginMap">
+		SELECT * FROM NETFLIX_ADMIN WHERE EMAIL=#{email}
+	</select>
+
+	<!-- 등록된 회원이면 사용자 정보 불러오기 -->
+	<select id="getDetail" parameterType="String"
+		resultMap="LoginMap">
+		SELECT * FROM NETFLIX_MEMBER WHERE EMAIL=#{email}
+	</select>
+
+	<!-- 카카오/네이버 로그인시 Member 등록 -->
+	<insert id="insertMember"
+		parameterType="com.spring.login.LoginVO">
+		INSERT INTO NETFLIX_MEMBER(EMAIL, PASSWORD, EMAIL_STATE)
+		VALUES(#{email}, #{password}, #{email_state})
+	</insert>
+</mapper>
