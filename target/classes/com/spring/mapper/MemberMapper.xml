@@ -11,6 +11,8 @@
 		<result property="sex" column="sex" />
 		<result property="category" column="category" />
 		<result property="email_state" column="email_state" />
+		<result property="authority" column="authority" />
+		<result property="enabled" column="enabled" />
 	</resultMap>
 	
 	<select id="emailCheck" resultMap="signUpMap">

@@ -4,7 +4,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.login.LoginVO;
 import com.spring.mapper.MemberMapper;
 
 @Service("memberService")
@@ -54,6 +53,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int memberInsert(MemberVO membervo) {
+		
 		int res = 0;
 		try {
 			MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);

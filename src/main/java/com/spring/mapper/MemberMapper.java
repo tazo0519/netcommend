@@ -1,6 +1,5 @@
 package com.spring.mapper;
 
-import com.spring.login.LoginVO;
 import com.spring.member.MemberVO;
 
 public interface MemberMapper {

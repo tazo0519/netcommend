@@ -6,10 +6,13 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.login.KakaoController;
 
@@ -29,7 +32,14 @@ public class HomeController {
 
 	@RequestMapping(value = "/category.nv")
 	public String category(Model model, HttpSession session, HttpServletResponse response) throws IOException {
-		String email = (String) session.getAttribute("email");
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object principal = auth.getPrincipal();
+		
+		
+//		String email = (String) session.getAttribute("email");
+		String email = auth.getName();
+		System.out.println(email);
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
@@ -67,11 +77,6 @@ public class HomeController {
 	@RequestMapping(value = "/forgotIdPw.me")
 	public String forgotIdPw(Model model) {
 		return "forgotIdPw";
-	}
-	
-	@RequestMapping(value = "/security_login.me")
-	public String security_login(Model model) {
-		return "security_login";
 	}
 
 }

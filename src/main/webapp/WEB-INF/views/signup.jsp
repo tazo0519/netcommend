@@ -7,7 +7,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />
 
 <!-- Font Awesome icons (free version)-->
@@ -78,7 +80,7 @@
 
 						<!-- name -->
 						<input type="text" name="name" class="checkfield form-control form-control-black flex-fill mr-0 mr-sm-2 mb-3"
-							placeholder="이름" required>
+							placeholder="이름">
 						
 						<!-- phone -->
 						<input type="text" name="phone" placeholder="핸드폰번호" class="form-control form-control-black flex-fill mr-0 mr-sm-2 mb-3">
@@ -101,11 +103,12 @@
 						
 						<br />
 						<br />
-						
+						<input name="${_csrf.parameterName}" type="hidden"
+							value="${_csrf.token}" />
 						<!-- 가입 버튼 -->
 						<div>
 							<input type="button" class="signup-btn form-control form-control-black" onclick="inputChk()"
-								value="가입하기" style="width: 130px; display: inline; background-color: #dadada;">
+								value="가입하기" style="width: 130px; display: inline; background-color: #969696;">
 						</div>
 					</form>
 				</div>

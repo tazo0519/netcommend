@@ -10,6 +10,8 @@ public class MemberVO {
 	private String sex;
 	private String category;
 	private String email_state;
+	private String authority;
+	private boolean enabled;
 	
 	public String getEmail_state() {
 		return email_state;
@@ -59,5 +61,18 @@ public class MemberVO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	public String getAuthority() {
+		return authority;
+	}
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 	
 }

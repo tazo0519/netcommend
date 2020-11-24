@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/security
+                        http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<beans:bean id="userService"
+		class="tody.common.service.CustomUserDetailsService" />
+
+	<jdbc-user-service data-source-ref="dataSource"
+		id="userService"
+		users-by-username-query="select email, password, enabled from netflix_member where email=?"
+		authorities-by-username-query="select email, password, authority from netflix_member where email=?" />
+
+
+	<beans:bean id="loginSuccess"
+		class="org.zerock.security.LoginSuccessHandler"></beans:bean>
+
+	<http use-expressions="true">
+		<intercept-url pattern="/**" access="permitAll" />
+
+
+		<form-login login-page="/login.nv"
+			login-processing-url="/security_login" username-parameter="email"
+			password-parameter="password" default-target-url="/main.tz"
+			authentication-success-handler-ref="loginSuccess" />
+		<!-- authentication-success-handler-ref="loginSuccess" -->
+		<logout invalidate-session="true" logout-url="/logout"
+			logout-success-url="/main.tz" delete-cookies="JSESSIONID"/>
+
+		<!-- enable csrf protection -->
+		<csrf disabled="false" />
+
+		<session-management>
+			<concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="true" expired-url="/login" />
+		</session-management>
+
+	</http>
+
+
+	<!-- <bean id="loginSuccessHandler" class="tody.common.handler.LoginSuccessHandler"> 
+		<property name="loginidname" value="loginId" /> <property name="defaultUrl" 
+		value="/" /> </bean> -->
+
+	<beans:bean id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<!-- <beans:bean id="userDetailService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl"> 
+		<beans:property name="dataSource" ref="dataSource" /> </beans:bean> -->
+
+
+	<!-- Provider -->
+	<authentication-manager
+		erase-credentials="false">
+		
+		<authentication-provider
+			user-service-ref="userService">
+			
+			<password-encoder ref="bcryptPasswordEncoder" />
+			<!-- <jdbc-user-service data-source-ref="dataSource" role-prefix="" users-by-username-query="select 
+				email, password, enabled from netflix_member where email=?" authorities-by-username-query="select 
+				email, authority from netflix_member where email=?" /> -->
+		</authentication-provider>
+	</authentication-manager>
+	<!-- <beans:bean id="loginSuccessHandler" class="com.gno.sample.security.LoginSuccessHandler" 
+		/> -->
+
+
+
+</beans:beans>
+
+
+	

@@ -27,7 +27,6 @@ public class KakaoController {
 	private final static String K_REDIRECT_URI = "http://localhost:8080/netflix/kakaologin.me";
 
 	public static String getAuthorizationUrl(HttpSession session) {
-		System.out.println("getAuthorizationUrl 진입.");
 		String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?" + "client_id=" + K_CLIENT_ID + "&redirect_uri="
 				+ K_REDIRECT_URI + "&response_type=code";
 		return kakaoUrl;

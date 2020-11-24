@@ -1,6 +1,14 @@
+<%@ page
+	import="org.springframework.security.core.context.SecurityContextHolder"%>
+<%@ page import="org.springframework.security.core.Authentication"%>
+<%@page import="com.spring.member.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.spring.login.*"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%
 	String email = (String) session.getAttribute("email");
 %>
@@ -28,21 +36,38 @@
 						href="about.nv">About</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger"
 						href="category.nv">Category</a></li>
-					<%
-						if (email == null) {
-					%>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger"
-						href="login.nv">Login</a></li>
-					<%
-						} else {
-					%>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger"
-						href="mypage.nv">MyPage</a></li>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger"
-						href="logout.nv">LogOut</a></li>
-					<%
-						}
-					%>
+					<sec:authorize access="isAnonymous()">
+						<c:if test="${email == null }">
+							<li class="nav-item"><a class="nav-link js-scroll-trigger"
+								href="login.nv">Login</a></li>
+						</c:if>
+						<c:if test="${email != null }">
+							<li class="nav-item"><a class="nav-link js-scroll-trigger"
+								href="mypage.nv">MyPage</a></li>
+							<li class="nav-item"><a class="nav-link js-scroll-trigger"
+								href="#"
+								onclick="document.getElementById('logout-form').submit();">LogOut</a></li>
+							<form id="logout-form"
+								action="${pageContext.request.contextPath}/logout" method="POST">
+								<input name="${_csrf.parameterName}" type="hidden"
+									value="${_csrf.token}" />
+							</form>
+						</c:if>
+						<!-- <li class="nav-item"><a class="nav-link js-scroll-trigger"
+							href="login.nv">Login</a></li> -->
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<li class="nav-item"><a class="nav-link js-scroll-trigger"
+							href="mypage.nv">MyPage</a></li>
+						<li class="nav-item"><a class="nav-link js-scroll-trigger"
+							href="#"
+							onclick="document.getElementById('logout-form').submit();">LogOut</a></li>
+						<form id="logout-form"
+							action="${pageContext.request.contextPath}/logout" method="POST">
+							<input name="${_csrf.parameterName}" type="hidden"
+								value="${_csrf.token}" />
+						</form>
+					</sec:authorize>
 				</ul>
 			</div>
 		</div>

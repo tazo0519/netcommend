@@ -36,9 +36,11 @@
 	href="${pageContext.request.contextPath}/resources/css/styles.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/forgotIdPw.css" />
-<script
-	src="${pageContext.request.contextPath}/resources/js/forgotIdPw.js"></script>
 
+<meta id="_csrf" name="_csrf" content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header"
+	content="${_csrf.headerName}" />
 <title>NetCommend</title>
 </head>
 <body id="page-top">
@@ -63,9 +65,8 @@
 						</ul>
 
 						<!-- 이메일 찾기 tab -->
-						<form method="POST" class="form-inline d-flex "
-							action="findemail.me"
-							style="max-width: 62%; margin: 0 auto;">
+						<form class="form-inline d-flex " method="POST"
+							action="findEmail.me" style="max-width: 62%; margin: 0 auto;">
 							<div id="tab-1" class="tab-content current">
 								<!-- 이름 입력 -->
 								<input class="form-control flex-fill mr-0 mr-sm-2 mb-3"
@@ -74,18 +75,19 @@
 								<!-- 핸드폰번호 입력 -->
 								<input class="form-control flex-fill mr-0 mr-sm-2 mb-3"
 									type="text" name="phone" maxlength="11" id="phone"
-									numberonly="true"
-									placeholder="Enter Phone Number..." style="width: 100%;" />
-
-								<!-- 아이디 찾기 버튼 -->
+									numberonly="true" placeholder="Enter Phone Number..."
+									style="width: 100%;" onkeyup="enterkey1();" /> <input
+									name="${_csrf.parameterName}" type="hidden"
+									value="${_csrf.token}" />
+								<!-- Email 찾기 버튼 -->
 								<button class="btn btn-primary mx-auto mb-3 find-btn text-white"
-									type="submit" style="width: 100%;">Find E-mail</button>
+									type="button" onclick="findEmail();" style="width: 100%;">Find
+									E-mail</button>
 							</div>
 						</form>
 
 						<!-- 비밀번호 찾기 tab -->
-						<form method="POST" class="form-inline d-flex "
-							action="findpassword.me"
+						<form class="form-inline d-flex " action="findpassword.me"
 							style="max-width: 62%; margin: 0 auto;">
 							<div id="tab-2" class="tab-content">
 								<!-- 이메일 입력 -->
@@ -96,14 +98,14 @@
 								<!-- 핸드폰번호 입력 -->
 								<input class="form-control flex-fill mr-0 mr-sm-2 mb-3"
 									type="text" name="phone" maxlength="11" id="phone"
-									numberonly="true"
-									placeholder="Enter Phone Number..." style="width: 100%;" />
+									numberonly="true" placeholder="Enter Phone Number..."
+									style="width: 100%;" />
 
 								<!-- 이름 입력 -->
 								<input class="form-control flex-fill mr-0 mr-sm-2 mb-3"
 									type="text" id="name" name="name" placeholder="Enter Name..."
-									style="width: 100%;" />
-
+									style="width: 100%;" /> <input name="${_csrf.parameterName}"
+									type="hidden" value="${_csrf.token}" />
 								<!-- 비밀번호 찾기 버튼 -->
 								<button class="btn btn-primary mx-auto mb-3 find-btn text-white"
 									type="submit" style="width: 100%;">Find Password</button>
@@ -132,7 +134,7 @@
 	<!-- Core theme JS-->
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/scripts.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/login.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/forgotIdPw.js"></script>
 </body>
 </html>

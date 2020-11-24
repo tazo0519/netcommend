@@ -9,21 +9,29 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class MemberController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
 	@Autowired
 	private MemberService memberService;
 
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	BCryptPasswordEncoder pwdEncoder;
 
 	/* 회원가입 DB Insert */
 	@RequestMapping(value = "/memberInsert.me", method = RequestMethod.POST)
@@ -35,7 +43,11 @@ public class MemberController {
 		PrintWriter writer;
 
 		try {
+			
 			/* DB insert */
+			String inputPass = membervo.getPassword();
+			String password = pwdEncoder.encode(inputPass);
+			membervo.setPassword(password);
 			int res = memberService.memberInsert(membervo);
 			writer = response.getWriter();
 

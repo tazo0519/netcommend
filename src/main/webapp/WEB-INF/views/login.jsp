@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	// 이전페이지 정보
 	String pre_url = null;
-	if(request.getParameter("pre_url") == null) {
+	if (request.getParameter("pre_url") == null) {
 		pre_url = request.getHeader("Referer");
 	} else {
 		pre_url = request.getParameter("pre_url");
@@ -17,7 +19,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />
+<link rel="icon" type="image/x-icon"
+	href="${pageContext.request.contextPath}/resources/images/favicon.ico" />
 
 <!-- Font Awesome icons (free version)-->
 <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js"
@@ -37,7 +40,7 @@
 <title>NetCommend</title>
 </head>
 <body id="page-top">
-	
+
 	<!-- Navigation Bar Include -->
 	<jsp:include page="/WEB-INF/views/header_etc.jsp" />
 
@@ -49,62 +52,72 @@
 					<h1 class="text-white mb-4">NetCommend</h1>
 					<br> <br>
 					<h4 class="text-white-50">로그인 후 다양한 컨텐츠를 이용하세요.</h4>
-					
+
 					<!-- 로그인 form -->
 					<form method="POST" class="form-inline d-flex " id="loginForm"
-						name="loginForm" action="normal_login.me"
+						name="loginForm"
+						action="${pageContext.request.contextPath}/security_login"
 						style="max-width: 62%; margin: 0 auto; margin-top: 20px;">
-						
+
 						<!-- email 입력 -->
 						<input class="form-control flex-fill mr-0 mr-sm-2 mb-3"
 							type="email" id="loginId" name="email"
-							placeholder="Enter email address..." /> 
+							placeholder="Enter email address..." />
 
 						<!-- password 입력 -->
 						<input class="form-control flex-fill mr-0 mr-sm-2 mb-3"
 							type="password" id="loginPw" name="password"
-							placeholder="Enter password..." onkeyup="enterkey();" 
-							style="width: 100%;"/>
-							
+							placeholder="Enter password..." onkeyup="enterkey();"
+							style="width: 100%;" />
+
 						<!-- 회원가입 & 아이디/비밀번호 찾기 -->
 						<div class="find mb-5" style="width: 100%;">
-							<span style="float: left; text-align: left;">
-								<a href="signup.me" class="text-white-50">회원가입</a>
-							</span>
-							<span style="float: right; text-align: right;">
-								<a href="forgotIdPw.me" class="text-white-50">이메일/비밀번호 찾기</a>
+							<span style="float: left; text-align: left;"> <a
+								href="signup.me" class="text-white-50">회원가입</a>
+							</span> <span style="float: right; text-align: right;"> <a
+								href="forgotIdPw.me" class="text-white-50">이메일/비밀번호 찾기</a>
 							</span>
 						</div>
-						
+						<input name="${_csrf.parameterName}" type="hidden"
+							value="${_csrf.token}" />
+
+						<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+							<font color="red">
+								<p>
+									Your login attempt was not successful due to <br />
+									${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+								</p> <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session" />
+							</font>
+						</c:if>
+
 						<!-- 로그인 -->
-						<button class="btn btn-primary mx-auto mb-3" onclick="login();" type="submit" style="width: 100%;">Login</button>
-						
-						<!-- 네이버 로그인 -->
-						<!-- 카카오 로그인 -->
-						<div class="api_login" style="width: 100%;">
-							<span style="width: 50%; display: inline-block;">
-								<button type="button" onclick="location.href='${naver_Url}'"
-									id="btn-left" style="background-color: black; border: none;">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/naverLogin.png"
-										style="float: left; text-align: left; 
-										width: 180px; border-radius: 5px;" />
-								</button>
-							</span> 
-							<span style="width: 50%; display: inline-block;">
-								<button type="button" onclick="location.href='${kakao_Url}'"
-									id="btn-right" style="background-color: black; border: none;">
-									<img
-										src="${pageContext.request.contextPath}/resources/images/kakaoLogin.png"
-										style="float: right; text-align: right;
-										width: 180px; border-radius: 5px;" />
-								</button> <br /> <br />
-							</span>
-						</div>
+						<button class="btn btn-primary mx-auto mb-3" onclick="login();"
+							type="button" style="width: 100%;">Login</button>
+
+
 					</form>
+					<!-- 네이버 로그인 -->
+					<!-- 카카오 로그인 -->
+					<div class="api_login" style="width: 100%;">
+						<span style="width: 50%; display: inline-block;">
+							<button type="button" onclick="location.href='${naver_Url}'"
+								id="btn-left" style="background-color: black; border: none;">
+								<img
+									src="${pageContext.request.contextPath}/resources/images/naverLogin.png"
+									style="float: left; text-align: left; width: 180px; border-radius: 5px;" />
+							</button>
+						</span> <span style="width: 50%; display: inline-block;">
+							<button type="button" onclick="location.href='${kakao_Url}'"
+								id="btn-right" style="background-color: black; border: none;">
+								<img
+									src="${pageContext.request.contextPath}/resources/images/kakaoLogin.png"
+									style="float: right; text-align: right; width: 180px; border-radius: 5px;" />
+							</button> <br /> <br />
+						</span>
+					</div>
 				</div>
 			</div>
-			
+
 			<!-- Netflix Logo -->
 			<img class="img-fluid mt-5"
 				style="display: block; margin: 0 auto; max-width: 50%;"

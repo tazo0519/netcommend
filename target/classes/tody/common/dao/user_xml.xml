@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="tody.common.dao.user">
+	<select id="selectUserById"
+		resultType="tody.common.vo.CustomUserDetails">
+        <![CDATA[
+            SELECT
+                *
+            FROM
+                netflix_member
+            WHERE
+                ID=#{ email}
+        ]]>
+	</select>
+</mapper>
